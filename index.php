@@ -1,34 +1,23 @@
 <!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
 <html>
     <head>
+        <script src="jquery-3.1.1.min.js"></script>
         <meta charset="UTF-8">
         <title>NEW HIGHLY PAYING FAUCET</title>
     </head>
     <body>
+        <form action="index.php"  method="post" target="_blank">
+            <input type="text" name="btcaddress" required pattern="[a-zA-Z0-9]+"><br>
+            <input type="submit" value="Claim Bitcoin">
+        </form>
         <?php
-        require_once 'login.php';
-        $conn = new mysqli($dbhost, $dblogin,$dbpass,$dbselect);
-        if($conn->connect_error) die($conn->connect_error);
-        $query = "select * from users";
-        $result=$conn->query($query);
-        if ($result->num_rows > 0) 
-        {
-            while($row = $result->fetch_assoc()) 
-            {
-                echo "Bitcoin Adress: " . $row["btcadress"]. " - Amount: " . $row["amount"]. " " . $row["last"]. "<br>";
-            }
-        } 
-        else 
-        {
-            echo "0 results";
+        require_once 'databaseFunctions.php';
+        $connection = array($dbhost, $dblogin, $dbpass, $dbselect);
+        if (isset($_POST['btcaddress'])) {
+            $input = $_POST['btcaddress'];
+            checkAdress($input, $connection);
         }
-        $result->close();
-        $conn->close();
+        showRecords($connection);
         ?>
     </body>
 </html>
